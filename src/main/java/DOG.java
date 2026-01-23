@@ -14,41 +14,42 @@ public class DOG {
         System.out.println("   " + line);
         
 while (true) {
-    String input = sc.nextLine(); // takes in user input
-
-    if (input.equals("bye")) {
-        break; // break out of loop if user says "bye"
-    } else if (input.equals("list")) {
-        //enumerates tasks from the list array
-        System.out.println("   " + line);
-        for (int i = 0; i < number; i++) {
-            System.out.println("   " + (i + 1) + "." + tasks[i]);
+    String input = sc.nextLine();
+    try {
+        if (input.equals("bye")) {
+            break;
+        } else if (input.equals("list")) {
+            System.out.println("   " + line);
+            for (int i = 0; i < number; i++) {
+                System.out.println("   " + (i + 1) + "." + tasks[i]);
+            }
+            System.out.println("   " + line);
+        } else if (input.startsWith("mark ")) {
+            int idx = Integer.parseInt(input.substring(5)) - 1;
+            tasks[idx].markAsDone();
+            System.out.println("   " + line + "\n   Nice! I've marked this as done:\n     " + tasks[idx] + "\n   " + line);
+        } else if (input.startsWith("todo ")) {
+            if (input.substring(5).trim().isEmpty()) {
+                throw new DogException("WOOF! The description of a todo cannot be empty.");
+            }
+            tasks[number++] = new Todo(input.substring(5));
+            System.out.println("   " + line + "\n   Added: " + tasks[number-1] + "\n   " + line);
+        } else if (input.startsWith("deadline ")) {
+            // Add error handling for missing /by
+            if (!input.contains(" /by ")) {
+                throw new DogException("WOOF! Deadlines must include '/by'.");
+            }
+            String[] parts = input.substring(9).split(" /by ");
+            tasks[number++] = new Deadline(parts[0], parts[1]);
+            System.out.println("   " + line + "\n   Added: " + tasks[number-1] + "\n   " + line);
+        } else {
+            // Handle unknown commands
+            throw new DogException("WOOF!!! I'm sorry, but I don't know what that means...");
         }
-        System.out.println("   " + line);
-    } else if (input.startsWith("mark ")) {
-        // marks a task as done
-        int idx = Integer.parseInt(input.substring(5)) - 1;
-        tasks[idx].markAsDone();
-        System.out.println("   " + line + "\n   Alright! I have marked this task as done:\n     " + tasks[idx] + "\n   " + line);
-    } else if (input.startsWith("unmark ")) {
-        // unmarks a task as not done
-        int idx = Integer.parseInt(input.substring(7)) - 1;
-        tasks[idx].unmark();
-        System.out.println("   " + line + "\n   Okay! I have unmarked this task:\n     " + tasks[idx] + "\n   " + line);
-    } else if (input.startsWith("todo ")) {
-        tasks[number] = new Todo(input.substring(5));
-        number++;
-        System.out.println("   " + line + "\n   Got it. I've added this task:\n     " + tasks[number-1] + "\n   Now you have " + number + " tasks in the list.\n   " + line);
-    } else if (input.startsWith("deadline ")) {
-        String[] parts = input.substring(9).split(" /by ");
-        tasks[number] = new Deadline(parts[0], parts[1]);
-        number++;
-        System.out.println("   " + line + "\n   Got it. I've added this task:\n     " + tasks[number-1] + "\n   Now you have " + number + " tasks in the list.\n   " + line);
-    } else if (input.startsWith("event ")) {
-        String[] parts = input.substring(6).split(" /from | /to ");
-        tasks[number] = new Event(parts[0], parts[1], parts[2]);
-        number++;
-        System.out.println("   " + line + "\n   Got it. I've added this task:\n     " + tasks[number-1] + "\n   Now you have " + number + " tasks in the list.\n   " + line);
+    } catch (DogException e) {
+        System.out.println("   " + line + "\n   " + e.getMessage() + "\n   " + line);
+    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+        System.out.println("   " + line + "\n   WOOF! Please provide a valid task number.\n   " + line);
     }
 }
 
