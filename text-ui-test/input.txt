@@ -1,0 +1,18 @@
+todo read book
+todo return book
+deadline submit assignment /by 2024-01-25
+event project meeting /from 2024-01-20 /to 2024-01-21
+list
+mark 1
+mark 3
+list
+unmark 1
+list
+todo finish homework
+deadline buy groceries /by 2024-01-24
+list
+mark 2
+mark 4
+mark 6
+list
+bye
