@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -38,8 +39,11 @@ public class DOG {
         String desc = p[2].trim();
         Task t = null;
         if ("T".equals(type)) t = new Todo(desc);
-        else if ("D".equals(type) && p.length >= 4) t = new Deadline(desc, p[3].trim());
-        else if ("E".equals(type) && p.length >= 5) t = new Event(desc, p[3].trim(), p[4].trim());
+        else if ("D".equals(type) && p.length >= 4) {
+            try {
+                t = new Deadline(desc, LocalDate.parse(p[3].trim()));
+            } catch (Exception e) { return null; }
+        } else if ("E".equals(type) && p.length >= 5) t = new Event(desc, p[3].trim(), p[4].trim());
         if (t != null && done) t.markAsDone();
         return t;
     }
@@ -52,6 +56,7 @@ public class DOG {
             Files.write(DATA_PATH, lines);
         } catch (IOException ignored) {}
     }
+
     public static void main(String[] args) {
         String line = "----------------------------------------------------------";
         Task[] tasks = new Task[100]; //array to store tasks specified by user
@@ -111,7 +116,12 @@ public class DOG {
                         throw new DogException("WOOF! Deadlines must include '/by'.");
                     }
                     String[] parts = input.substring(9).split(" /by ");
-                    tasks[number++] = new Deadline(parts[0], parts[1]);
+                    try {
+                        LocalDate byDate = LocalDate.parse(parts[1].trim());
+                        tasks[number++] = new Deadline(parts[0].trim(), byDate);
+                    } catch (Exception e) {
+                        throw new DogException("WOOF! Use date as yyyy-mm-dd format please!");
+                    }
                     saveTasks(tasks, number);
                     System.out.println("   " + line + "\n   Added: " + tasks[number-1] + "\n   " + line);
                 } else if (input.startsWith("event ")) {
