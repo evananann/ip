@@ -1,0 +1,12 @@
+T | 0 | read book
+T | 1 | return book
+D | 1 | submit assignment | 2024-01-25
+E | 1 | project meeting | 2024-01-20 | 2024-01-21
+T | 0 | finish homework
+D | 1 | buy groceries | 2024-01-24
+T | 0 | read book
+T | 0 | return book
+D | 0 | submit assignment | 2024-01-25
+E | 0 | project meeting | 2024-01-20 | 2024-01-21
+T | 0 | finish homework
+D | 0 | buy groceries | 2024-01-24

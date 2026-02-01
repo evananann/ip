@@ -1,3 +1,5 @@
+package dog;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
