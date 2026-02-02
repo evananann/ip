@@ -1,4 +1,5 @@
 package dog;
+
 import java.time.LocalDate;
 
 public class DOG {
@@ -68,6 +69,19 @@ public class DOG {
                     storage.save(tasks.getTasks());
                     ui.showMessage("Got it. I've added this task:\n     " + task
                             + "\n   Now you have " + tasks.size() + " tasks in the list.");
+                } else if (Parser.isFind(input)) {
+                    String keyword = Parser.getFindKeyword(input);
+                    ui.showLine();
+                    System.out.println("   Here are the matching tasks in your list:");
+                    int displayIndex = 1;
+                    for (int i = 0; i < tasks.size(); i++) {
+                        Task task = tasks.getTask(i);
+                        if (task.toString().contains(keyword)) {
+                            System.out.println("   " + displayIndex + "." + task);
+                            displayIndex++;
+                        }
+                    }
+                    ui.showLine();
                 } else {
                     throw new DogException("WOOF!!! I'm sorry, but I don't know what that means...");
                 }
@@ -79,6 +93,7 @@ public class DOG {
         }
         ui.showGoodbye();
     }
+
     public static void main(String[] args) {
         new DOG("data/dog.txt").run();
     }
