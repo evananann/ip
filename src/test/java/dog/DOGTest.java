@@ -1,11 +1,13 @@
 package dog;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class DOGTest {
     @Test
-    public void dummyTest() {
-        assertEquals(2, 2);
+    public void testTaskMarking() {
+        Todo todo = new Todo("read");
+        todo.markAsDone();
+        assertEquals("[T][X] read", todo.toString());
     }
 
     @Test

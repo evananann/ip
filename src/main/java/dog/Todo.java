@@ -1,5 +1,8 @@
 package dog;
 
+/**
+ * Represents a basic to-do task with only a description.
+ */
 public class Todo extends Task {
     public Todo(String description) {
         super(description);

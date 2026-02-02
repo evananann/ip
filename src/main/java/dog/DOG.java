@@ -1,12 +1,23 @@
 package dog;
 import java.time.LocalDate;
 
+/**
+ * Main entry point for the DOG task manager application.
+ * <p>
+ * It wires together {@link Storage}, {@link TaskList}, and {@link Ui}
+ * and runs the main user interaction loop.
+ */
 public class DOG {
 
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates a new DOG instance using the given storage file path.
+     *
+     * @param filePath path to the file used for persisting tasks
+     */
     public DOG(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -18,6 +29,9 @@ public class DOG {
         }
     }
 
+    /**
+     * Runs the main interaction loop until the user issues the {@code bye} command.
+     */
     public void run() {
         ui.showWelcome();
         while (true) {
@@ -79,6 +93,12 @@ public class DOG {
         }
         ui.showGoodbye();
     }
+
+    /**
+     * Application entry point.
+     *
+     * @param args command line arguments (unused)
+     */
     public static void main(String[] args) {
         new DOG("data/dog.txt").run();
     }

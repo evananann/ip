@@ -1,9 +1,9 @@
 package dog;
 import java.time.LocalDate;
 
-
-// Logic to make sense of the user command.
- 
+/**
+ * Provides helper methods for interpreting and validating user commands.
+ */
 public class Parser {
 
     public static boolean isBye(String input) {

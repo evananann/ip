@@ -1,5 +1,8 @@
 package dog;
 
+/**
+ * Represents a task that occurs within a specified time range.
+ */
 public class Event extends Task {
     protected String from;
     protected String to;
