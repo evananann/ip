@@ -1,9 +1,4 @@
 package dog;
-<<<<<<< HEAD
-=======
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
->>>>>>> branch-A-JavaDoc
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
