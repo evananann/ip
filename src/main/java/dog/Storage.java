@@ -8,14 +8,28 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles loading tasks from disk and saving them back to disk.
+ */
 public class Storage {
     private final Path filePath;
 
+    /**
+     * Creates a storage instance that reads from and writes to the given file.
+     *
+     * @param filePath relative path to the data file
+     */
     public Storage(String filePath) {
         this.filePath = Paths.get(System.getProperty("user.dir"), filePath.replace("/", java.io.File.separator));
     }
 
-    // Loads tasks from the file and returns an empty list if file does not exist or cannot be read from
+    /**
+     * Loads tasks from the backing file.
+     * If the file does not exist, it is created and an empty list is returned.
+     *
+     * @return tasks loaded from disk (possibly empty)
+     * @throws DogException if the file exists but cannot be read
+     */
     public ArrayList<Task> load() throws DogException {
         try {
             if (Files.notExists(filePath)) {
@@ -65,7 +79,11 @@ public class Storage {
         return t;
     }
 
-    // Saves the given task list to the file.
+    /**
+     * Saves the given task list to the backing file, overwriting its contents.
+     *
+     * @param tasks tasks to persist
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             Files.createDirectories(filePath.getParent());
