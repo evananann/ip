@@ -2,13 +2,13 @@ package dog;
 
 import java.time.LocalDate;
 
-public class DOG {
+public class Dog {
 
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
-    public DOG(String filePath) {
+    public Dog(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
         try {
@@ -69,7 +69,7 @@ public class DOG {
                     storage.save(tasks.getTasks());
                     ui.showMessage("Got it. I've added this task:\n     " + task
                             + "\n   Now you have " + tasks.size() + " tasks in the list.");
-                } else if (Parser.isFind(input)) {
+                 } else if (Parser.isFind(input)) {
                     String keyword = Parser.getFindKeyword(input);
                     ui.showLine();
                     System.out.println("   Here are the matching tasks in your list:");
@@ -93,8 +93,7 @@ public class DOG {
         }
         ui.showGoodbye();
     }
-
     public static void main(String[] args) {
-        new DOG("data/dog.txt").run();
+        new Dog("data/dog.txt").run();
     }
 }

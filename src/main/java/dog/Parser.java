@@ -1,9 +1,7 @@
 package dog;
+
 import java.time.LocalDate;
 
-
-// Logic to make sense of the user command.
- 
 public class Parser {
 
     public static boolean isBye(String input) {
@@ -38,6 +36,10 @@ public class Parser {
         return input != null && input.startsWith("event ");
     }
 
+    public static boolean isFind(String input) {
+        return input != null && input.startsWith("find ");
+    }
+
     /**
      * Returns the 0-based index for mark/unmark/delete commands.
      */
@@ -69,9 +71,17 @@ public class Parser {
     public static String getTodoDescription(String input) throws DogException {
         String desc = input.substring(5).trim();
         if (desc.isEmpty()) {
-            throw new DogException("WOOF! Description of a todo cannot be empty.");
+            throw new DogException("WOOF! Description of a todo cannot be empty...");
         }
         return desc;
+    }
+
+    public static String getFindKeyword(String input) throws DogException {
+        String keyword = input.substring(5).trim();
+        if (keyword.isEmpty()) {
+            throw new DogException("WOOF! The keyword for find cannot be empty...");
+        }
+        return keyword;
     }
 
     public static String[] getDeadlineParts(String input) throws DogException {
