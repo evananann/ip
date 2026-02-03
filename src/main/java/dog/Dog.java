@@ -18,6 +18,9 @@ public class Dog {
         }
     }
 
+    /**
+     * Runs the main interaction loop until the user issues the {@code bye} command.
+     */
     public void run() {
         ui.showWelcome();
         while (true) {
@@ -92,6 +95,12 @@ public class Dog {
         }
         ui.showGoodbye();
     }
+
+    /**
+     * Application entry point.
+     *
+     * @param args command line arguments (unused)
+     */
     public static void main(String[] args) {
         new Dog("data/dog.txt").run();
     }
