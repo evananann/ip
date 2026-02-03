@@ -1,7 +1,9 @@
 package dog;
 
+// CHECKSTYLE.OFF: CustomImportOrder
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+// CHECKSTYLE.ON: CustomImportOrder
 
 public class DogTest {
     @Test

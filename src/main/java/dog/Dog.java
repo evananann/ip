@@ -1,12 +1,19 @@
 package dog;
+
 import java.time.LocalDate;
 
+/**
+ * Main class for the Dog chatbot.
+ */
 public class Dog {
 
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Initializes the chatbot with a file path for storage.
+     */
     public Dog(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -71,7 +78,7 @@ public class Dog {
                     storage.save(tasks.getTasks());
                     ui.showMessage("Got it. I've added this task:\n     " + task
                             + "\n   Now you have " + tasks.size() + " tasks in the list.");
-                 } else if (Parser.isFind(input)) {
+                } else if (Parser.isFind(input)) {
                     String keyword = Parser.getFindKeyword(input);
                     ui.showLine();
                     System.out.println("   Here are the matching tasks in your list:");
