@@ -103,6 +103,92 @@ public class Dog {
         ui.showGoodbye();
     }
 
+    public String getResponse(String input) {
+        try {
+            if (Parser.isBye(input)) {
+            return "Bye! Catch you later!";
+        } else if (Parser.isList(input)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Here are the tasks in your list:\n");
+            for (int i = 0; i < tasks.size(); i++) {
+                sb.append(i + 1).append(". ").append(tasks.getTask(i)).append("\n");
+            }
+            return sb.toString().trim();
+
+        } else if (Parser.isMark(input)) {
+            int idx = Parser.getMarkIndex(input);
+            tasks.markDone(idx);
+            storage.save(tasks.getTasks());
+            return "Alright! I have marked this task as done:\n  " + tasks.getTask(idx);
+
+        } else if (Parser.isUnmark(input)) {
+            int idx = Parser.getUnmarkIndex(input);
+            tasks.unmark(idx);
+            storage.save(tasks.getTasks());
+            return "Okay! I have unmarked this task:\n  " + tasks.getTask(idx);
+
+        } else if (Parser.isDelete(input)) {
+            int idx = Parser.getDeleteIndex(input);
+            Task removedTask = tasks.deleteTask(idx);
+            storage.save(tasks.getTasks());
+            return "Okay. I have removed this task:\n  " + removedTask
+                    + "\nThere are now " + tasks.size() + " tasks in the list.";
+
+        } else if (Parser.isTodo(input)) {
+            String desc = Parser.getTodoDescription(input);
+            Task task = new Todo(desc);
+            tasks.addTask(task);
+            storage.save(tasks.getTasks());
+            return "Got it. I've added this task:\n  " + task
+                    + "\nNow you have " + tasks.size() + " tasks in the list.";
+
+        } else if (Parser.isDeadline(input)) {
+            String[] parts = Parser.getDeadlineParts(input);
+            Task task = new Deadline(parts[0], LocalDate.parse(parts[1].trim()));
+            tasks.addTask(task);
+            storage.save(tasks.getTasks());
+            return "Got it. I've added this task:\n  " + task
+                    + "\nNow you have " + tasks.size() + " tasks in the list.";
+
+        } else if (Parser.isEvent(input)) {
+            String[] parts = Parser.getEventParts(input);
+            Task task = new Event(parts[0], parts[1], parts[2]);
+            tasks.addTask(task);
+            storage.save(tasks.getTasks());
+            return "Got it. I've added this task:\n  " + task
+                    + "\nNow you have " + tasks.size() + " tasks in the list.";
+
+        } else if (Parser.isFind(input)) {
+            String keyword = Parser.getFindKeyword(input);
+            StringBuilder sb = new StringBuilder();
+            sb.append("Here are the matching tasks in your list:\n");
+
+            int displayIndex = 1;
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.getTask(i);
+                if (task.toString().contains(keyword)) {
+                    sb.append(displayIndex).append(". ").append(task).append("\n");
+                    displayIndex++;
+                }
+            }
+            if (displayIndex == 1) {
+                return "No matching tasks found.";
+            }
+            return sb.toString().trim();
+
+        } else {
+            throw new DogException("WOOF!!! I'm sorry, but I don't know what that means...");
+        }
+
+        } catch (DogException e) {
+        return e.getMessage();
+        } catch (IndexOutOfBoundsException e) {
+        return "WOOF! Please provide a valid task number.";
+        }
+    }
+
+
+
     /**
      * Application entry point.
      *

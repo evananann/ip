@@ -1,8 +1,1 @@
-<<<<<<< HEAD
-T | 1 | hello
-T | 0 | helloo
-T | 0 | sleep
-T | 0 | read book
-T | 0 | read magazine
-=======
->>>>>>> 482bf095d21bab34f2115279354d816b915504ad
+D | 0 | return book | 2019-08-12
