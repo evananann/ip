@@ -54,6 +54,7 @@ public class TaskList {
      * @return task at the given index
      */
     public Task getTask(int index) {
+        assertIndexInBounds(index);
         return tasks.get(index);
     }
 
@@ -63,6 +64,7 @@ public class TaskList {
      * @param index zero-based index of the task
      */
     public void markDone(int index) {
+        assertIndexInBounds(index);
         tasks.get(index).markAsDone();
     }
 
@@ -72,6 +74,7 @@ public class TaskList {
      * @param index zero-based index of the task
      */
     public void unmark(int index) {
+        assertIndexInBounds(index);
         tasks.get(index).unmark();
     }
 
@@ -91,5 +94,14 @@ public class TaskList {
      */
     public int size() {
         return tasks.size();
+    }
+
+    /**
+     * Asserts that the given index is within the valid range of the current task list.
+     * @param index zero-based index to check
+     * @throws AssertionError if index is negative or not less than size
+     */
+    private void assertIndexInBounds(int index) {
+        assert index >= 0 && index < tasks.size() : "index out of bounds: " + index;
     }
 }

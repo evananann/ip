@@ -85,6 +85,8 @@ public class Storage {
      * @param tasks tasks to persist
      */
     public void save(ArrayList<Task> tasks) {
+        assert tasks != null: "Tasks must not be null when saving to disk";
+        
         try {
             Files.createDirectories(filePath.getParent());
             List<String> lines = new ArrayList<>();
