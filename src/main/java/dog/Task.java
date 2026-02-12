@@ -27,6 +27,15 @@ public abstract class Task {
     }
 
     /**
+     * Returns the file representation of the done status.
+     *
+     * @return {@code "1"} if done, otherwise {@code "0"}
+     */
+    protected String getDoneStatus() {
+        return isDone ? "1" : "0";
+    }
+
+    /**
      * Marks this task as completed.
      */
     public void markAsDone() {

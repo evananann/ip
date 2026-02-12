@@ -52,9 +52,17 @@ public class TaskList {
      *
      * @param index zero-based index
      * @return task at the given index
+     * @throws DogException if the index is out of range
      */
+<<<<<<< HEAD
+    public Task getTask(int index) throws DogException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new DogException("WOOF! Please provide a valid task number.");
+        }
+=======
     public Task getTask(int index) {
         assertIndexInBounds(index);
+>>>>>>> master
         return tasks.get(index);
     }
 
@@ -62,9 +70,17 @@ public class TaskList {
      * Marks the task at the given index as completed.
      *
      * @param index zero-based index of the task
+     * @throws DogException if the index is out of range
      */
+<<<<<<< HEAD
+    public void markDone(int index) throws DogException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new DogException("WOOF! Please provide a valid task number.");
+        }
+=======
     public void markDone(int index) {
         assertIndexInBounds(index);
+>>>>>>> master
         tasks.get(index).markAsDone();
     }
 
@@ -72,9 +88,17 @@ public class TaskList {
      * Marks the task at the given index as not completed.
      *
      * @param index zero-based index of the task
+     * @throws DogException if the index is out of range
      */
+<<<<<<< HEAD
+    public void unmark(int index) throws DogException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new DogException("WOOF! Please provide a valid task number.");
+        }
+=======
     public void unmark(int index) {
         assertIndexInBounds(index);
+>>>>>>> master
         tasks.get(index).unmark();
     }
 
