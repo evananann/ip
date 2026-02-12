@@ -83,8 +83,9 @@ public class Storage {
      * Saves the given task list to the backing file, overwriting its contents.
      *
      * @param tasks tasks to persist
+     * @throws DogException if the tasks cannot be written to disk
      */
-    public void save(ArrayList<Task> tasks) {
+    public void save(ArrayList<Task> tasks) throws DogException {
         try {
             Files.createDirectories(filePath.getParent());
             List<String> lines = new ArrayList<>();
@@ -93,7 +94,7 @@ public class Storage {
             }
             Files.write(filePath, lines);
         } catch (IOException e) {
-            System.out.println("Could not save tasks to disk!");
+            throw new DogException("WOOF! Could not save tasks to disk!");
         }
     }
 }
