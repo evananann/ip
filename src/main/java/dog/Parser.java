@@ -47,6 +47,10 @@ public class Parser {
      * Returns the 0-based index for mark/unmark/delete commands.
      */
     public static int getIndex(String input, String prefix) throws DogException {
+        assert input != null: "Input should not be null when parsing index";
+        assert prefix != null: "Prefix should not be null when parsing index";
+        assert input.startsWith(prefix): "getIndex has been called with wrong prefix: " + prefix;
+        
         String rest = input.substring(prefix.length()).trim();
         try {
             int oneBased = Integer.parseInt(rest);
