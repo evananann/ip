@@ -20,7 +20,9 @@ public class Storage {
      * @param filePath relative path to the data file
      */
     public Storage(String filePath) {
-        this.filePath = Paths.get(System.getProperty("user.dir"), filePath.replace("/", java.io.File.separator));
+        // Use resolve to handle relative paths more robustly across OSes.
+        // Github copilot was used to improve file path resolution
+        this.filePath = Paths.get(System.getProperty("user.dir")).resolve(filePath).normalize();
     }
 
     /**

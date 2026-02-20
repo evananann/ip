@@ -50,65 +50,23 @@ public class Dog {
     private String processCommand(String input) {
         try {
             if (Parser.isList(input)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Here are the tasks in your list:\n");
-                for (int i = 0; i < tasks.size(); i++) {
-                    sb.append(i + 1).append(". ").append(tasks.getTask(i)).append("\n");
-                }
-                return sb.toString().trim();
-
+                return handleList();
             } else if (Parser.isMark(input)) {
-                int idx = Parser.getMarkIndex(input);
-                tasks.markDone(idx);
-                storage.save(tasks.getTasks());
-                return "Alright! I have marked this task as done:\n  " + tasks.getTask(idx);
-
+                return handleMark(input);
             } else if (Parser.isUnmark(input)) {
-                int idx = Parser.getUnmarkIndex(input);
-                tasks.unmark(idx);
-                storage.save(tasks.getTasks());
-                return "Okay! I have unmarked this task:\n  " + tasks.getTask(idx);
-
+                return handleUnmark(input);
             } else if (Parser.isDelete(input)) {
-                int idx = Parser.getDeleteIndex(input);
-                Task removedTask = tasks.deleteTask(idx);
-                storage.save(tasks.getTasks());
-                return "Okay. I have removed this task:\n  " + removedTask
-                        + "\nThere are now " + tasks.size() + " tasks in the list.";
-
+                return handleDelete(input);
             } else if (Parser.isTodo(input)) {
-                String desc = Parser.getTodoDescription(input);
-                Task task = new Todo(desc);
-                tasks.addTask(task);
-                storage.save(tasks.getTasks());
-                return formatAddTaskResponse(task, tasks.size());
-
+                return handleTodo(input);
             } else if (Parser.isDeadline(input)) {
-                String[] parts = Parser.getDeadlineParts(input);
-                Task task = new Deadline(parts[0], LocalDate.parse(parts[1].trim()));
-                tasks.addTask(task);
-                storage.save(tasks.getTasks());
-                return formatAddTaskResponse(task, tasks.size());
-
+                return handleDeadline(input);
             } else if (Parser.isEvent(input)) {
-                String[] parts = Parser.getEventParts(input);
-                Task task = new Event(parts[0], parts[1], parts[2]);
-                tasks.addTask(task);
-                storage.save(tasks.getTasks());
-                return formatAddTaskResponse(task, tasks.size());
-
+                return handleEvent(input);
             } else if (Parser.isFind(input)) {
-                String keyword = Parser.getFindKeyword(input);
-                return formatFindResults(keyword);
-
+                return handleFind(input);
             } else if (Parser.isTag(input)) {
-                int idx = Parser.getTagIndex(input);
-                String label = Parser.getTagLabel(input);
-                Task task = tasks.getTask(idx);
-                task.setTag(label);
-                storage.save(tasks.getTasks());
-                return "Okay! I tagged the task:\n  " + task;
-
+                return handleTag(input);
             } else {
                 throw new DogException("WOOF!!! I'm sorry, but I don't know what that means...");
             }
@@ -117,6 +75,75 @@ public class Dog {
         } catch (IndexOutOfBoundsException e) {
             return "WOOF! Please provide a valid task number.";
         }
+    }
+
+    private String handleList() throws DogException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Here are the tasks in your list:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.getTask(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
+    private String handleMark(String input) throws DogException {
+        int idx = Parser.getMarkIndex(input);
+        tasks.markDone(idx);
+        storage.save(tasks.getTasks());
+        return "Alright! I have marked this task as done:\n  " + tasks.getTask(idx);
+    }
+
+    private String handleUnmark(String input) throws DogException {
+        int idx = Parser.getUnmarkIndex(input);
+        tasks.unmark(idx);
+        storage.save(tasks.getTasks());
+        return "Okay! I have unmarked this task:\n  " + tasks.getTask(idx);
+    }
+
+    private String handleDelete(String input) throws DogException {
+        int idx = Parser.getDeleteIndex(input);
+        Task removedTask = tasks.deleteTask(idx);
+        storage.save(tasks.getTasks());
+        return "Okay. I have removed this task:\n  " + removedTask
+                + "\nThere are now " + tasks.size() + " tasks in the list.";
+    }
+
+    private String handleTodo(String input) throws DogException {
+        String desc = Parser.getTodoDescription(input);
+        Task task = new Todo(desc);
+        tasks.addTask(task);
+        storage.save(tasks.getTasks());
+        return formatAddTaskResponse(task, tasks.size());
+    }
+
+    private String handleDeadline(String input) throws DogException {
+        String[] parts = Parser.getDeadlineParts(input);
+        Task task = new Deadline(parts[0], LocalDate.parse(parts[1].trim()));
+        tasks.addTask(task);
+        storage.save(tasks.getTasks());
+        return formatAddTaskResponse(task, tasks.size());
+    }
+
+    private String handleEvent(String input) throws DogException {
+        String[] parts = Parser.getEventParts(input);
+        Task task = new Event(parts[0], parts[1], parts[2]);
+        tasks.addTask(task);
+        storage.save(tasks.getTasks());
+        return formatAddTaskResponse(task, tasks.size());
+    }
+
+    private String handleFind(String input) throws DogException {
+        String keyword = Parser.getFindKeyword(input);
+        return formatFindResults(keyword);
+    }
+
+    private String handleTag(String input) throws DogException {
+        int idx = Parser.getTagIndex(input);
+        String label = Parser.getTagLabel(input);
+        Task task = tasks.getTask(idx);
+        task.setTag(label);
+        storage.save(tasks.getTasks());
+        return "Okay! I tagged the task:\n  " + task;
     }
 
     /**

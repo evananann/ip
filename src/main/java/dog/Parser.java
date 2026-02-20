@@ -10,45 +10,60 @@ public class Parser {
     private static final int FIND_PREFIX_LEN = 5;
     private static final int DEADLINE_PREFIX_LEN = 9;
     private static final int EVENT_PREFIX_LEN = 6;
-
+    
+    // Helper to avoid repeating null checks and trims.
+    // Github copilot was used to improve trimming and null-safety in command checks
+    private static String trimmed(String input) {
+        return input == null ? "" : input.trim();
+    }
     public static boolean isBye(String input) {
-        return input != null && input.trim().equals("bye");
+        String t = trimmed(input);
+        return t.equals("bye");
     }
 
     public static boolean isList(String input) {
-        return input != null && input.trim().equals("list");
+        String t = trimmed(input);
+        return t.equals("list");
     }
 
     public static boolean isMark(String input) {
-        return input != null && input.trim().startsWith("mark ");
+        String t = trimmed(input);
+        return t.startsWith("mark ");
     }
 
     public static boolean isUnmark(String input) {
-        return input != null && input.trim().startsWith("unmark ");
+        String t = trimmed(input);
+        return t.startsWith("unmark ");
     }
 
     public static boolean isDelete(String input) {
-        return input != null && input.trim().startsWith("delete ");
+        String t = trimmed(input);
+        return t.startsWith("delete ");
     }
 
     public static boolean isTodo(String input) {
-        return input != null && input.trim().startsWith("todo ");
+        String t = trimmed(input);
+        return t.startsWith("todo ");
     }
 
     public static boolean isDeadline(String input) {
-        return input != null && input.trim().startsWith("deadline ");
+        String t = trimmed(input);
+        return t.startsWith("deadline ");
     }
 
     public static boolean isEvent(String input) {
-        return input != null && input.trim().startsWith("event ");
+        String t = trimmed(input);
+        return t.startsWith("event ");
     }
 
     public static boolean isFind(String input) {
-        return input != null && input.trim().startsWith("find ");
+        String t = trimmed(input);
+        return t.startsWith("find ");
     }
 
     public static boolean isTag(String input) {
-        return input != null && input.trim().startsWith("tag ");
+        String t = trimmed(input);
+        return t.startsWith("tag ");
     }
 
     /**
@@ -57,9 +72,12 @@ public class Parser {
     public static int getIndex(String input, String prefix) throws DogException {
         assert input != null: "Input should not be null when parsing index";
         assert prefix != null: "Prefix should not be null when parsing index";
-        assert input.startsWith(prefix): "getIndex has been called with wrong prefix: " + prefix;
-        
-        String rest = input.substring(prefix.length()).trim();
+        // Trim input first to be resilient to leading/trailing whitespace.
+        // Github copilot was used to improve index parsing robustness
+        String t = input.trim();
+        assert t.startsWith(prefix): "getIndex has been called with wrong prefix: " + prefix;
+
+        String rest = t.substring(prefix.length()).trim();
         try {
             int oneBased = Integer.parseInt(rest);
             if (oneBased < 1) {
@@ -92,7 +110,7 @@ public class Parser {
      */
     public static String getTagLabel(String input) throws DogException {
         assert input != null: "Input should not be null when parsing tag label";
-        String rest = input.substring(4).trim(); // after 'tag '
+        String rest = trimmed(input).substring(4).trim(); // after 'tag '
         String[] parts = rest.split(" ", 2);
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new DogException("WOOF! Please provide a tag label after the task number.");
@@ -108,7 +126,7 @@ public class Parser {
     }
 
     public static String getTodoDescription(String input) throws DogException {
-        String desc = input.substring(TODO_PREFIX_LEN).trim();
+        String desc = trimmed(input).substring(TODO_PREFIX_LEN).trim();
         if (desc.isEmpty()) {
             throw new DogException("WOOF! Description of a todo cannot be empty...");
         }
@@ -116,7 +134,7 @@ public class Parser {
     }
 
     public static String getFindKeyword(String input) throws DogException {
-        String keyword = input.substring(FIND_PREFIX_LEN).trim();
+        String keyword = trimmed(input).substring(FIND_PREFIX_LEN).trim();
         if (keyword.isEmpty()) {
             throw new DogException("WOOF! The keyword for find cannot be empty...");
         }
@@ -127,7 +145,11 @@ public class Parser {
         if (!input.contains(" /by ")) {
             throw new DogException("WOOF! Deadlines must include '/by'.");
         }
-        String[] parts = input.substring(DEADLINE_PREFIX_LEN).split(" /by ", 2);
+        String t = trimmed(input);
+        if (!t.contains(" /by ")) {
+            throw new DogException("WOOF! Deadlines must include '/by'.");
+        }
+        String[] parts = t.substring(DEADLINE_PREFIX_LEN).split(" /by ", 2);
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new DogException("WOOF! Use date as yyyy-mm-dd format please!");
         }
@@ -140,10 +162,11 @@ public class Parser {
     }
 
     public static String[] getEventParts(String input) throws DogException {
-        if (!input.contains(" /from ") || !input.contains(" /to ")) {
+        String t = trimmed(input);
+        if (!t.contains(" /from ") || !t.contains(" /to ")) {
             throw new DogException("WOOF! Events must include '/from' and '/to'.");
         }
-        String[] toParts = input.substring(EVENT_PREFIX_LEN).split(" /to ", 2);
+        String[] toParts = t.substring(EVENT_PREFIX_LEN).split(" /to ", 2);
         String[] fromParts = toParts[0].split(" /from ", 2);
         if (fromParts.length < 2 || toParts.length < 2) {
             throw new DogException("WOOF! Events must include '/from' and '/to'.");
