@@ -27,6 +27,10 @@ public class Deadline extends Task {
 
     @Override
     public String toFileString() {
-        return "D | " + getDoneStatus() + " | " + description + " | " + by;
+        String base = "D | " + getDoneStatus() + " | " + description + " | " + by;
+        if (getTag() != null && !getTag().isEmpty()) {
+            base += " | " + getTag();
+        }
+        return base;
     }
 }

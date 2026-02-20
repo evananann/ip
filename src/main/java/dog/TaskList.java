@@ -54,15 +54,8 @@ public class TaskList {
      * @return task at the given index
      * @throws DogException if the index is out of range
      */
-<<<<<<< HEAD
     public Task getTask(int index) throws DogException {
-        if (index < 0 || index >= tasks.size()) {
-            throw new DogException("WOOF! Please provide a valid task number.");
-        }
-=======
-    public Task getTask(int index) {
-        assertIndexInBounds(index);
->>>>>>> master
+        ensureIndexInBounds(index);
         return tasks.get(index);
     }
 
@@ -72,15 +65,8 @@ public class TaskList {
      * @param index zero-based index of the task
      * @throws DogException if the index is out of range
      */
-<<<<<<< HEAD
     public void markDone(int index) throws DogException {
-        if (index < 0 || index >= tasks.size()) {
-            throw new DogException("WOOF! Please provide a valid task number.");
-        }
-=======
-    public void markDone(int index) {
-        assertIndexInBounds(index);
->>>>>>> master
+        ensureIndexInBounds(index);
         tasks.get(index).markAsDone();
     }
 
@@ -90,15 +76,8 @@ public class TaskList {
      * @param index zero-based index of the task
      * @throws DogException if the index is out of range
      */
-<<<<<<< HEAD
     public void unmark(int index) throws DogException {
-        if (index < 0 || index >= tasks.size()) {
-            throw new DogException("WOOF! Please provide a valid task number.");
-        }
-=======
-    public void unmark(int index) {
-        assertIndexInBounds(index);
->>>>>>> master
+        ensureIndexInBounds(index);
         tasks.get(index).unmark();
     }
 
@@ -123,9 +102,11 @@ public class TaskList {
     /**
      * Asserts that the given index is within the valid range of the current task list.
      * @param index zero-based index to check
-     * @throws AssertionError if index is negative or not less than size
+     * @throws DogException if index is negative or not less than size
      */
-    private void assertIndexInBounds(int index) {
-        assert index >= 0 && index < tasks.size() : "index out of bounds: " + index;
+    private void ensureIndexInBounds(int index) throws DogException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new DogException("WOOF! Please provide a valid task number.");
+        }
     }
 }

@@ -47,6 +47,10 @@ public class Parser {
         return input != null && input.trim().startsWith("find ");
     }
 
+    public static boolean isTag(String input) {
+        return input != null && input.trim().startsWith("tag ");
+    }
+
     /**
      * Returns the 0-based index for mark/unmark/delete commands.
      */
@@ -77,6 +81,30 @@ public class Parser {
 
     public static int getDeleteIndex(String input) throws DogException {
         return getIndex(input, "delete ");
+    }
+
+    public static int getTagIndex(String input) throws DogException {
+        return getIndex(input, "tag ");
+    }
+
+    /**
+     * Returns the tag label (without leading '#') for a tag command like "tag 2 #fun".
+     */
+    public static String getTagLabel(String input) throws DogException {
+        assert input != null: "Input should not be null when parsing tag label";
+        String rest = input.substring(4).trim(); // after 'tag '
+        String[] parts = rest.split(" ", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new DogException("WOOF! Please provide a tag label after the task number.");
+        }
+        String label = parts[1].trim();
+        if (label.startsWith("#")) {
+            label = label.substring(1);
+        }
+        if (label.isEmpty()) {
+            throw new DogException("WOOF! Tag cannot be empty.");
+        }
+        return label;
     }
 
     public static String getTodoDescription(String input) throws DogException {

@@ -54,7 +54,7 @@ public class Storage {
         if (line == null || line.isEmpty()) {
             return null;
         }
-        String[] p = line.split(" \\| ", 5);
+        String[] p = line.split(" \\| ", 6);
         if (p.length < 3) {
             return null;
         }
@@ -64,14 +64,32 @@ public class Storage {
         Task t = null;
         if ("T".equals(type)) {
             t = new Todo(desc);
+            if (p.length >= 4) {
+                String tag = p[3].trim();
+                if (!tag.isEmpty()) {
+                    t.setTag(tag);
+                }
+            }
         } else if ("D".equals(type) && p.length >= 4) {
             try {
                 t = new Deadline(desc, LocalDate.parse(p[3].trim()));
+                if (p.length >= 5) {
+                    String tag = p[4].trim();
+                    if (!tag.isEmpty()) {
+                        t.setTag(tag);
+                    }
+                }
             } catch (Exception e) {
                 return null;
             }
         } else if ("E".equals(type) && p.length >= 5) {
             t = new Event(desc, p[3].trim(), p[4].trim());
+            if (p.length >= 6) {
+                String tag = p[5].trim();
+                if (!tag.isEmpty()) {
+                    t.setTag(tag);
+                }
+            }
         }
         if (t != null && done) {
             t.markAsDone();
@@ -85,13 +103,9 @@ public class Storage {
      * @param tasks tasks to persist
      * @throws DogException if the tasks cannot be written to disk
      */
-<<<<<<< HEAD
     public void save(ArrayList<Task> tasks) throws DogException {
-=======
-    public void save(ArrayList<Task> tasks) {
         assert tasks != null: "Tasks must not be null when saving to disk";
         
->>>>>>> master
         try {
             Files.createDirectories(filePath.getParent());
             List<String> lines = new ArrayList<>();

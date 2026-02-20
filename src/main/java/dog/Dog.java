@@ -101,6 +101,14 @@ public class Dog {
                 String keyword = Parser.getFindKeyword(input);
                 return formatFindResults(keyword);
 
+            } else if (Parser.isTag(input)) {
+                int idx = Parser.getTagIndex(input);
+                String label = Parser.getTagLabel(input);
+                Task task = tasks.getTask(idx);
+                task.setTag(label);
+                storage.save(tasks.getTasks());
+                return "Okay! I tagged the task:\n  " + task;
+
             } else {
                 throw new DogException("WOOF!!! I'm sorry, but I don't know what that means...");
             }

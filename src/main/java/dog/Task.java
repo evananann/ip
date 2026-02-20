@@ -6,6 +6,7 @@ package dog;
 public abstract class Task {
     protected String description;
     protected boolean isDone;
+    protected String tag;
 
     /**
      * Constructs a new task with the given description.
@@ -15,6 +16,7 @@ public abstract class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.tag = null;
     }
 
     /**
@@ -51,7 +53,29 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        String base = "[" + getStatusIcon() + "] " + description;
+        if (tag != null && !tag.isEmpty()) {
+            return base + " #" + tag;
+        }
+        return base;
+    }
+
+    /**
+     * Sets the tag for this task (without the leading '#').
+     */
+    public void setTag(String tag) {
+        if (tag == null) {
+            this.tag = null;
+        } else {
+            this.tag = tag.trim();
+        }
+    }
+
+    /**
+     * Returns the tag for this task, or null if none.
+     */
+    public String getTag() {
+        return tag;
     }
 
     /**

@@ -25,6 +25,10 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        return "E | " + getDoneStatus() + " | " + description + " | " + from + " | " + to;
+        String base = "E | " + getDoneStatus() + " | " + description + " | " + from + " | " + to;
+        if (getTag() != null && !getTag().isEmpty()) {
+            base += " | " + getTag();
+        }
+        return base;
     }
 }
